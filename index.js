@@ -27,11 +27,15 @@ app.use(express.static(path.join(__dirname, "public")));
  */
 
 app.get("/", (req, res) => {
-    res.render("index", { title: "Home" });
+    res.render("welcome", { title: "Welcome" }); // Renders welcome.pug
 });
 
-app.get("/user", (req, res) => {
-    res.render("user", { title: "Profile", userProfile: { nickname: "Auth0" } });
+app.get("/login", (req, res) => {
+    res.render('login', {title: "Login"}); // Renders login.pug
+});
+
+app.get("/options", (req, res) => {
+    res.render('options', {title: "Options"}); // Renders options.pug
 });
 
 /**
