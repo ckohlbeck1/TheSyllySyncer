@@ -1,9 +1,8 @@
 # TheSyllySyncer
 
-# Windows: npm install -g npm
-# Mac: sudo npm install -g npm
+# Run: npm install 
 
-# To check if it is installed: node -v (should return version number)
+# Or to check if it is installed: node -v (should return version number)
 
 # npm run dev
 # http://localhost:8000/
