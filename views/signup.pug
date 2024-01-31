@@ -1,16 +1,13 @@
 html
-  head
-    title Login Page
+  heads
+    title Sign Up Page
     link(rel="stylesheet" type="text/css" href="/style.css")
   body.bodyLogin
-    form.formLogin(action="/login" method="post")
+    form.formLogin(action="/signup" method="post")
       label.labelLogin(for="username") Username:
       input.inputLogin(type="text" id="username" name="username" required)
       
       label.labelLogin(for="password") Password:
       input.inputLogin(type="password" id="password" name="password" required)
 
-      button.buttonLogin(type="submit", href="/options") Login
-
-// Can get rid of when singup not needed
-<a href="/signup">Create a new account</a>
+      button.buttonLogin(type="submit", href="/login") Sign Up
