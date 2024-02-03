@@ -41,6 +41,10 @@ app.get("/options", (req, res) => {
     res.render('options', {title: "Options"}); // Renders options.pug
 });
 
+app.get("/results", (req, res) => {
+    res.render('results', {title: "results"}); // Renders results.pug
+});
+
 app.post('/signup', async (req, res) => {
     const data ={
         username: req.body.username,
@@ -59,12 +63,13 @@ app.post('/login', async (req, res) => {
         if(check.password == req.body.password){
             res.redirect("/options");
         }else{
-            res.send("wrong username or password!");
+            res.render('login', { title: "Login", errorMessage: "Incorrect username or password!" });
         }
 
     }
     catch{
-        res.send("Error during login.")
+        console.error(err);
+        res.render('login', { title: "Login", errorMessage: "Error during login." });
     };
 
 

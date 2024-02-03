@@ -5,6 +5,13 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Login Page
     link(rel="stylesheet", href="/style.css")
+    script.
+      window.onload = function() {
+        const errorMessage = "#{errorMessage}";
+        if (errorMessage) {
+          alert(errorMessage);
+        }
+      }
   body.login-page
     h1 The SyllySyncer
     .login-info-container

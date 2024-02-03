@@ -12,11 +12,12 @@ h1 {
   text-align: center;
   padding-top: 20px;
   font-size: 100px;
+  font-weight: bold;
 }
 
 .login-info-container {
   background-color: #FFD580;
-  border-radius: 10px;
+  border-radius: 20px;
   padding: 20px;
   margin: 20px auto;
   max-width: 500px;
@@ -73,4 +74,163 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #FFFFFF;
   color: #FD6D2F;
+}
+
+
+
+
+
+/* Header */
+
+.top-banner {
+  background-color: #FFD580; /* Change the background color as needed */
+  color: #FD6D2F; /* Change the text color as needed */
+  font-family: 'Comic Sans MS', cursive;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.left-section {
+  flex: 1;
+  font-size: 80px;
+  font-weight: bold;
+  white-space: nowrap;
+  margin-left: 30px;
+}
+
+.right-section {
+  flex: 1;
+  text-align: right;
+  font-size: 40px;
+  margin-right: 30px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.right-section a {
+  color: #fff; /* Change the link color as needed */
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.right-section a:last-child {
+  margin-left: 30px; /* Adjust spacing between "home" and "login" */
+}
+
+.right-section a:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Drop down menus */
+
+.dropdown-container {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 35px;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+select {
+  padding: 5px;
+  font-size: 30px;
+  width: 800px; 
+  color:#FD6D2F;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+
+.button-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #FD6D2F; /* Green */
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  font-size: 30px;
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #FFD580; /* Darker green on hover */
+}
+
+
+
+
+/* Scrollable results box */
+
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+
+.scrollable-box {
+  width: 50%; /* Increased width for better readability */
+  font-size: 18px; /* Slightly reduced font size for better readability */
+  max-height: 80%; /* Adjusted max height for better spacing */
+  overflow-y: auto;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  padding: 20px; /* Increased padding for better spacing */
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  line-height: 1.6; /* Slightly increased line height for better readability */
+  margin-top: 80px;
+}
+
+
+
+.result-button-container {
+  display: flex;
+  justify-content: space-around; /* Adjusted spacing between buttons */
+  margin-top: 80px; /* Adjust margin top as needed */
+}
+
+.button-left,
+.button-right {
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  padding: 10px 20px;
+  background-color: #FD6D2F; /* Green */
+  color: white;
+  text-decoration: none;
+  font-size: 30px;
+  border-radius: 20px; /* Rounded corners */
+  cursor: pointer;
+}
+
+.button-left:hover,
+.button-right:hover {
+  background-color: #FFD580;
 }
