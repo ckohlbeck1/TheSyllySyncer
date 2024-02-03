@@ -1,15 +1,18 @@
-html
+doctype html
+html(lang="en")
   head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Login Page
-    link(rel="stylesheet" type="text/css" href="/style.css")
-  body.bodyLogin
-    form.formLogin(action="/login" method="post")
-      label.labelLogin(for="username") Username:
-      input.inputLogin(type="text" id="username" name="username" required)
-      
-      label.labelLogin(for="password") Password:
-      input.inputLogin(type="password" id="password" name="password" required)
+    link(rel="stylesheet", href="/style.css")
+  body.login-page
+    h1 The SyllySyncer
+    .login-info-container
+      form(action="/login" method="post")
+        .input-group
+          input(type="text" id="username" name="username" placeholder="Username" required)
+        .input-group
+          input(type="password" id="password" name="password" placeholder="Password" required)
+        .form-actions
+          button(type="submit", href="/home") Login
 
-      button.buttonLogin(type="submit", href="/home") Login
-
-<a href="/signup">Create a new account</a>

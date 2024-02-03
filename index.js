@@ -21,21 +21,15 @@ const port = process.env.PORT || "8000";
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-//app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-
-
 
 /**
  * Routes Definitions
  */
 
 app.get("/", (req, res) => {
-    res.render("welcome", { title: "Welcome" }); // Renders welcome.pug
-});
-
-app.get("/login", (req, res) => {
     res.render('login', {title: "Login"}); // Renders login.pug
 });
 
@@ -63,18 +57,19 @@ app.post('/login', async (req, res) => {
    try{
         const check = await LogInCollection.findOne({username:req.body.username});
         if(check.password == req.body.password){
-            res.render("home");
+            res.redirect("/options");
         }else{
-            res.send("wrong password!");
+            res.send("wrong username or password!");
         }
 
     }
     catch{
-        res.send("idk what happened")
+        res.send("Error during login.")
     };
 
 
 });
+
 /**
  * Server Activation
  */
