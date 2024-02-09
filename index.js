@@ -61,7 +61,7 @@ app.post('/login', async (req, res) => {
    try{
         const check = await LogInCollection.findOne({username:req.body.username});
         if(check.password == req.body.password){
-            res.redirect("/options");
+            res.render('options', { username: req.body.username });
         }else{
             res.render('login', { title: "Login", errorMessage: "Incorrect username or password!" });
         }
