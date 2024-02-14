@@ -7,6 +7,9 @@
 const express = require("express");
 const path = require("path");
 const LogInCollection = require("./mongodb");
+const multer = require('multer');
+const csv = require('csv-parser');
+const fs = require('fs');
 
 /**
  * App Variables
@@ -15,6 +18,7 @@ const LogInCollection = require("./mongodb");
 const app = express();
 const port = process.env.PORT || "8000";
 
+const upload = multer({dest: 'uploads/'});
 /**
  *  App Configuration
  */
@@ -57,11 +61,27 @@ res.render("home");
 
 });
 
-app.post('/login', async (req, res) => {
+app.post('/login', upload.single('csvfile'), async (req, res) => {
    try{
         const check = await LogInCollection.findOne({username:req.body.username});
         if(check.password == req.body.password){
-            res.render('options', { username: req.body.username });
+            const results = {};
+
+            fs.createReadStream('./data.csv')
+                .pipe(csv())
+                .on('data', (data) => {
+                    const className = data.Class;
+                    const studentID = data.StudentID;
+        
+                    if(!results[className]){
+                        results[className] = [];
+                    }
+                    results[className].push(studentID);
+                })
+                .on('end', () => {
+                    const classData = Object.entries(results).map(([className, studentID])=> ({className, studentID}));
+                    res.render('options', { classData, selectedClass: null, username: req.body.username });
+                });
         }else{
             res.render('login', { title: "Login", errorMessage: "Incorrect username or password!" });
         }
