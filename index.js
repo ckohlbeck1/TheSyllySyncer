@@ -41,8 +41,27 @@ app.get("/signup", (req, res) => {
     res.render('signup', {title: "SignUp"}); // Renders login.pug
 });
 
-app.get("/options", (req, res) => {
-    res.render('options', {title: "Options"}); // Renders options.pug
+app.get("/options", async(req, res) => {
+    const check = await LogInCollection.findOne({username:req.body.username});
+
+    const results = {};
+
+            fs.createReadStream('./data.csv')
+                .pipe(csv())
+                .on('data', (data) => {
+                    const className = data.Class;
+                    const studentID = data.StudentID;
+        
+                    if(!results[className]){
+                        results[className] = [];
+                    }
+                    results[className].push(studentID);
+                })
+                .on('end', () => {
+                    const classData = Object.entries(results).map(([className, studentID])=> ({className, studentID}));
+                    res.render('options', { classData, selectedClass: null, username: req.body.username });
+                });
+   // res.render('options', {title: "Options"}); // Renders options.pug
 });
 
 app.get("/results", (req, res) => {
