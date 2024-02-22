@@ -10,6 +10,7 @@ const LogInCollection = require("./mongodb");
 const multer = require('multer');
 const csv = require('csv-parser');
 const fs = require('fs');
+const session = require('express-session');
 
 /**
  * App Variables
@@ -34,6 +35,19 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
+app.use(session({
+    secret: 'secret-key',
+    resave: true,
+    saveUninitialized: true
+}));
+
+function requireLogin(req, res, next){
+    if(req.session && req.session.username){
+        return next();
+    } else {
+        return res.redirect('/login');
+    }
+}
 /**
  * Routes Definitions
  */
@@ -47,7 +61,7 @@ app.get("/signup", (req, res) => {
 });
 
 app.get("/options", async(req, res) => {
-    const check = await LogInCollection.findOne({username:req.body.username});
+    const check = await LogInCollection.findOne({username:req.session.username});
 
     const results = {};
 
@@ -61,7 +75,7 @@ app.get("/options", async(req, res) => {
                     students = Array.from(studentsMap.values());
                 })
                 .on('end', () => {
-                    res.render('options', { students, username: req.body.username, selectedClass, selectedSection, groupSize });
+                    res.render('options', { students, username: req.session.username, selectedClass, selectedSection, groupSize });
                 });
             
 });
@@ -78,14 +92,15 @@ app.post('/signup', async (req, res) => {
 
 await LogInCollection.insertMany([data]);
 
-res.render("home");
+res.render("login");
 
 });
 
 app.post('/login', upload.single('csvfile'), async (req, res) => {
    try{
         const check = await LogInCollection.findOne({username:req.body.username});
-        if(check.password == req.body.password){            
+        if(check.password == req.body.password){   
+            req.session.username = req.body.username;         
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
