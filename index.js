@@ -15,7 +15,10 @@ const fs = require('fs');
  * App Variables
  */
 const studentsMap = new Map();
-
+const selectedClass = "";
+const selectedSection = "";
+const groupSize = 0;
+let students = [];
 
 const app = express();
 const port = process.env.PORT || "8000";
@@ -51,10 +54,14 @@ app.get("/options", async(req, res) => {
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
-                    studentsMap.set(data.class, { prof: data.prof, section: data.section, class: data.class});
+                    const classKey = data.class;
+                    const profValue = data.prof;
+                    const sectionsArray = Object.values(data).slice(2); 
+                    studentsMap.set(data.class, { prof: profValue, section: sectionsArray, class: classKey});
+                    students = Array.from(studentsMap.values());
                 })
                 .on('end', () => {
-                    res.render('options', { students: Array.from(studentsMap.values()), username: req.body.username });
+                    res.render('options', { students, username: req.body.username, selectedClass, selectedSection, groupSize });
                 });
             
 });
@@ -82,10 +89,14 @@ app.post('/login', upload.single('csvfile'), async (req, res) => {
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
-                    studentsMap.set(data.class, { prof: data.prof, section: data.section, class: data.class});
+                    const classKey = data.class;
+                    const profValue = data.prof;
+                    const sectionsArray = Object.values(data).slice(2); 
+                    studentsMap.set(data.class, { prof: profValue, section: sectionsArray, class: classKey});
+                    students = Array.from(studentsMap.values());
                 })
                 .on('end', () => {
-                    res.render('options', { students: Array.from(studentsMap.values()), username: req.body.username });
+                    res.render('options', { students, username: req.body.username, selectedClass, selectedSection, groupSize});
                 });
         }else{
             res.render('login', { title: "Login", errorMessage: "Incorrect username or password!" });

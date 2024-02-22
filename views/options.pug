@@ -7,6 +7,8 @@ html(lang='en')
     title The SyllySyncer
     link(rel='stylesheet', href='style.css')
   body
+    script. 
+      let students = !{JSON.stringify(students)};
     .container
       .top-banner
         .left-section
@@ -19,23 +21,57 @@ html(lang='en')
       .row
           .dropdown
             label(for='dropdown1') Class:
-            select(id='dropdown1' onchange='handleDropdownChange(this)')
+            select(id='dropdown1' onchange='updateClass(this.value, students)')
               option(value='' disabled selected hidden) Select
               each student in students
                 if student.prof == username
                   option(value= student.class)= student.class
           .dropdown
             label(for='dropdown2') Section:
-            select(id='dropdown2' onchange='handleDropdownChange(this)')
+            select(id='dropdown2' onchange='updateSection(this.value)')
               option(value='' disabled selected hidden) Select
-              each student in students
-                option(value= student.section)= student.section
           .dropdown
             label(for='dropdown3') Group Size:
-            select(id='dropdown3' onchange='handleDropdownChange(this)')
+            select(id='dropdown3' onchange='updateSize(this.value)')
               option(value='' disabled selected hidden) Select
               option(value='1') 1
               option(value='2') 2
               option(value='3') 3
     .button-container
       a.button(href='/results') Generate
+
+  script. 
+    function updateClass(dropdownSelection, students) {
+      console.log("Dropdown Selection:", dropdownSelection);
+      selectedClass = dropdownSelection;
+      console.log("Selected Class:", selectedClass);
+
+      const dropdown2 = document.getElementById('dropdown2');
+      dropdown2.innerHTML = '';
+  
+      const selectedStudent = students.find(student => student.class === selectedClass);
+      console.log("Selected Student:", selectedStudent);
+  
+      if (selectedStudent && selectedStudent.section) { 
+        console.log("Sections:", selectedStudent.section);
+        selectedStudent.section.forEach(section => {
+          console.log("Adding section:", section);
+          const option = document.createElement('option');
+          option.value = section;
+          option.textContent = section;
+          dropdown2.appendChild(option);
+        });
+      }
+    }
+
+    function updateSection(dropdownSelection) {
+      console.log("Dropdown Selection:", dropdownSelection);
+      selectedSection = dropdownSelection;
+      console.log("Selected Section:", selectedSection);
+    }
+
+    function updateSize(dropdownSelection) {
+      console.log("Dropdown Selection:", dropdownSelection);
+      groupSize = dropdownSelection;
+      console.log("Selected Section:", groupSize);
+    }

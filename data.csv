@@ -1,5 +1,5 @@
-class,section,prof
-COP3503,23,chris
-COP4600,24,syd
-CEN3415,25,john
-CDA3101,26,chris
+class,prof,section
+COP3503,chris,23,24,25
+COP4600,syd,24,45,78
+CEN3415,john,25,45,65
+CDA3101,chris,26,67,89
