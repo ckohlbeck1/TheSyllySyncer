@@ -5,6 +5,7 @@
 
 ## npm install mongoose
 ## npm install multer
+## npm install express-session
 
 ## npm run dev
 ## http://localhost:8000/
