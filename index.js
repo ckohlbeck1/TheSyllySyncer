@@ -14,7 +14,7 @@ const fs = require('fs');
 /**
  * App Variables
  */
-
+const studentsMap = new Map();
 const app = express();
 const port = process.env.PORT || "8000";
 
@@ -83,23 +83,14 @@ res.render("home");
 app.post('/login', upload.single('csvfile'), async (req, res) => {
    try{
         const check = await LogInCollection.findOne({username:req.body.username});
-        if(check.password == req.body.password){
-            const results = {};
-
+        if(check.password == req.body.password){            
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
-                    const className = data.Class;
-                    const studentID = data.StudentID;
-        
-                    if(!results[className]){
-                        results[className] = [];
-                    }
-                    results[className].push(studentID);
+                    studentsMap.set(data.student_id, { class: data.class, section: data.section});
                 })
                 .on('end', () => {
-                    const classData = Object.entries(results).map(([className, studentID])=> ({className, studentID}));
-                    res.render('options', { classData, selectedClass: null, username: req.body.username });
+                    res.render('options', { students: Array.from(studentsMap.values()), username: req.body.username });
                 });
         }else{
             res.render('login', { title: "Login", errorMessage: "Incorrect username or password!" });
