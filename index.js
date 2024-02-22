@@ -49,19 +49,12 @@ app.get("/options", async(req, res) => {
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
-                    const className = data.Class;
-                    const studentID = data.StudentID;
-        
-                    if(!results[className]){
-                        results[className] = [];
-                    }
-                    results[className].push(studentID);
+                    studentsMap.set(data.student_id, { class: data.class, section: data.section});
                 })
                 .on('end', () => {
-                    const classData = Object.entries(results).map(([className, studentID])=> ({className, studentID}));
-                    res.render('options', { classData, selectedClass: null, username: req.body.username });
+                    res.render('options', { students: Array.from(studentsMap.values()), username: req.body.username });
                 });
-   // res.render('options', {title: "Options"}); // Renders options.pug
+            
 });
 
 app.get("/results", (req, res) => {
