@@ -15,6 +15,8 @@ const fs = require('fs');
  * App Variables
  */
 const studentsMap = new Map();
+
+
 const app = express();
 const port = process.env.PORT || "8000";
 
@@ -49,7 +51,7 @@ app.get("/options", async(req, res) => {
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
-                    studentsMap.set(data.student_id, { class: data.class, section: data.section});
+                    studentsMap.set(data.class, { prof: data.prof, section: data.section, class: data.class});
                 })
                 .on('end', () => {
                     res.render('options', { students: Array.from(studentsMap.values()), username: req.body.username });
@@ -80,7 +82,7 @@ app.post('/login', upload.single('csvfile'), async (req, res) => {
             fs.createReadStream('./data.csv')
                 .pipe(csv())
                 .on('data', (data) => {
-                    studentsMap.set(data.student_id, { class: data.class, section: data.section});
+                    studentsMap.set(data.class, { prof: data.prof, section: data.section, class: data.class});
                 })
                 .on('end', () => {
                     res.render('options', { students: Array.from(studentsMap.values()), username: req.body.username });
