@@ -126,6 +126,13 @@ app.post('/login', upload.single('csvfile'), async (req, res) => {
 
 });
 
+app.post('/results', (req, res) => {
+    const selectedClass = req.body.selectedClass; // Retrieve selectedClass from form data
+    const selectedSection = req.body.selectedSection; // Retrieve selectedSection from form data
+  
+    // Pass selectedClass and selectedSection to results.pug
+    res.render('results', { selectedClass, selectedSection });
+});
 /**
  * Server Activation
  */

@@ -38,7 +38,10 @@ html(lang='en')
               option(value='2') 2
               option(value='3') 3
     .button-container
-      a.button(href='/results') Generate
+      form(action='/results', method='post') 
+          input(type='hidden', name='selectedClass', id='selectedClass') 
+          input(type='hidden', name='selectedSection', id='selectedSection') 
+          button.button(type='submit') Generate
 
   script. 
     function updateClass(dropdownSelection, students) {
@@ -62,12 +65,15 @@ html(lang='en')
           dropdown2.appendChild(option);
         });
       }
+      document.getElementById('selectedClass').value = selectedClass;
     }
 
     function updateSection(dropdownSelection) {
       console.log("Dropdown Selection:", dropdownSelection);
       selectedSection = dropdownSelection;
       console.log("Selected Section:", selectedSection);
+      document.getElementById('selectedSection').value = selectedSection; // Set value for hidden input
+
     }
 
     function updateSize(dropdownSelection) {
