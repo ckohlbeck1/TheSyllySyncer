@@ -15,44 +15,12 @@ html(lang='en')
           a(href='/options') Home     
           a(href='/') Login
     .content-container
-      each student in studentInfo
-        p= student.ufid
       .scrollable-box
-            | Group 1
-            br
-            | Sam Soto 
-            br
-            | Chris Kohlbeck 
-            br 
-            br 
-            | Group 2
-            br
-            | Sam Soto 
-            br
-            | Chris Kohlbeck 
-            br 
-            br 
-            | Group 3
-            br
-            | Sam Soto 
-            br
-            | Chris Kohlbeck 
-            br 
-            br 
-            | Group 4
-            br
-            | Sam Soto 
-            br
-            | Chris Kohlbeck 
-            br 
-            br 
-            | Group 5
-            br
-            | Sam Soto 
-            br
-            | Chris Kohlbeck 
-            br 
-            br 
+            each student in matchingStudents
+              each temp in student.timeArray
+                p= temp
+              
+           
     .result-button-container 
         a.button-left(href='/options') Home
         a.button-right(href='#') Export

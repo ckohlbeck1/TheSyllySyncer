@@ -133,7 +133,7 @@ app.post('/results', upload.single('csvfile'), async (req, res) => {
 
         const selectedClass = req.body.selectedClass; // Retrieve selectedClass from form data
         const selectedSection = req.body.selectedSection; // Retrieve selectedSection from form data
-
+        const matchingStudents = [];
         fs.createReadStream('./student.csv')
                 .pipe(csv())
                 .on('data', (student) => {
@@ -148,12 +148,17 @@ app.post('/results', upload.single('csvfile'), async (req, res) => {
                     const class4Value = student.class4;
                     const section4Value = student.section4;
 
-                    const timeArrayValue = Object.values(student).slice(9); 
-                    studentInfoMap.set(student.ufid, { ufid: ufidValue, class1: class1Value, section1: section1Value, class2: class2Value, section2: section2Value, class3: class3Value, section3: section3Value, class4: class4Value, section4: section4Value, timeArray: timeArrayValue});
-                    studentInfo = Array.from(studentInfoMap.values());
+                    if ((class1Value === selectedClass && section1Value === selectedSection) ||
+                (class2Value === selectedClass && section2Value === selectedSection) ||
+                (class3Value === selectedClass && section3Value === selectedSection) ||
+                (class4Value === selectedClass && section4Value === selectedSection)) {
+                const timeArrayValue = Object.values(student).slice(9); 
+                // Add the student's information to the array
+                matchingStudents.push({ ufid: ufidValue, class1: class1Value, section1: section1Value, class2: class2Value, section2: section2Value, class3: class3Value, section3: section3Value, class4: class4Value, section4: section4Value, timeArray: timeArrayValue});
+            }
                 })
                 .on('end', () => {
-                    res.render('results', { studentInfo, username: req.session.username, selectedClass, selectedSection, groupSize});
+                    res.render('results', { matchingStudents, username: req.session.username, selectedClass, selectedSection, groupSize});
                 });
 
 });
