@@ -1,3 +1,4 @@
+
 doctype html
 html(lang='en')
   head
@@ -14,8 +15,8 @@ html(lang='en')
           a(href='/options') Home     
           a(href='/') Login
     .content-container
-      h2 Class: #{selectedClass} 
-      h2 Section: #{selectedSection}
+      each student in studentInfo
+        p= student.ufid
       .scrollable-box
             | Group 1
             br

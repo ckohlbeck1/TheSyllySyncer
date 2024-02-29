@@ -51,6 +51,11 @@ html(lang='en')
 
       const dropdown2 = document.getElementById('dropdown2');
       dropdown2.innerHTML = '';
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Select';
+      dropdown2.appendChild(defaultOption);
   
       const selectedStudent = students.find(student => student.class === selectedClass);
       console.log("Selected Student:", selectedStudent);

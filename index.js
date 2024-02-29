@@ -16,10 +16,12 @@ const session = require('express-session');
  * App Variables
  */
 const studentsMap = new Map();
+const studentInfoMap = new Map();
 const selectedClass = "";
 const selectedSection = "";
 const groupSize = 0;
 let students = [];
+let studentInfo = [];
 
 const app = express();
 const port = process.env.PORT || "8000";
@@ -80,8 +82,8 @@ app.get("/options", async(req, res) => {
             
 });
 
-app.get("/results", (req, res) => {
-    res.render('results', {title: "results"}); // Renders results.pug
+app.get("/results", async(req, res) => {
+    res.render('results', {title: "results"}); 
 });
 
 app.post('/signup', async (req, res) => {
@@ -126,13 +128,36 @@ app.post('/login', upload.single('csvfile'), async (req, res) => {
 
 });
 
-app.post('/results', (req, res) => {
-    const selectedClass = req.body.selectedClass; // Retrieve selectedClass from form data
-    const selectedSection = req.body.selectedSection; // Retrieve selectedSection from form data
-  
-    // Pass selectedClass and selectedSection to results.pug
-    res.render('results', { selectedClass, selectedSection });
+app.post('/results', upload.single('csvfile'), async (req, res) => {
+        const check = await LogInCollection.findOne({username:req.body.username});
+
+        const selectedClass = req.body.selectedClass; // Retrieve selectedClass from form data
+        const selectedSection = req.body.selectedSection; // Retrieve selectedSection from form data
+
+        fs.createReadStream('./student.csv')
+                .pipe(csv())
+                .on('data', (student) => {
+
+                    const ufidValue = student.ufid;
+                    const class1Value = student.class1;
+                    const section1Value = student.section1;
+                    const class2Value = student.class2;
+                    const section2Value = student.section2;
+                    const class3Value = student.class3;
+                    const section3Value = student.section3;
+                    const class4Value = student.class4;
+                    const section4Value = student.section4;
+
+                    const timeArrayValue = Object.values(student).slice(9); 
+                    studentInfoMap.set(student.ufid, { ufid: ufidValue, class1: class1Value, section1: section1Value, class2: class2Value, section2: section2Value, class3: class3Value, section3: section3Value, class4: class4Value, section4: section4Value, timeArray: timeArrayValue});
+                    studentInfo = Array.from(studentInfoMap.values());
+                })
+                .on('end', () => {
+                    res.render('results', { studentInfo, username: req.session.username, selectedClass, selectedSection, groupSize});
+                });
+
 });
+
 /**
  * Server Activation
  */
