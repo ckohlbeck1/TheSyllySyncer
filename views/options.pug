@@ -34,16 +34,30 @@ html(lang='en')
             label(for='dropdown3') Group Size:
             select(id='dropdown3' onchange='updateSize(this.value)')
               option(value='' disabled selected hidden) Select
-              option(value='1') 1
+              // option(value='1') 1
               option(value='2') 2
-              option(value='3') 3
+              // option(value='3') 3
     .button-container
-      form(action='/results', method='post') 
+      form(action='/results', method='post', onsubmit='return validateDropdowns()') 
           input(type='hidden', name='selectedClass', id='selectedClass') 
           input(type='hidden', name='selectedSection', id='selectedSection') 
           button.button(type='submit') Generate
 
   script. 
+
+    function validateDropdowns() {
+      const dropdown1 = document.getElementById('dropdown1');
+      const dropdown2 = document.getElementById('dropdown2');
+      const dropdown3 = document.getElementById('dropdown3');
+
+      if (dropdown1.value === '' || dropdown2.value === '' || dropdown3.value === '') {
+          alert('Please select all three dropdown options before continuing.');
+          return false; // Prevent form submission
+      }
+
+      return true; // Allow form submission
+    }
+
     function updateClass(dropdownSelection, students) {
       console.log("Dropdown Selection:", dropdownSelection);
       selectedClass = dropdownSelection;
