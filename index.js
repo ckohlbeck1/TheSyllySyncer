@@ -128,39 +128,72 @@ app.post('/login', upload.single('csvfile'), async (req, res) => {
 
 });
 
+// Add the following function to calculate the Hamming distance between two binary arrays
+function hammingDistance(arr1, arr2) {
+    let distance = 0;
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            distance++;
+        }
+    }
+    return distance;
+}
+
 app.post('/results', upload.single('csvfile'), async (req, res) => {
-        const check = await LogInCollection.findOne({username:req.body.username});
+    const check = await LogInCollection.findOne({ username: req.body.username });
 
-        const selectedClass = req.body.selectedClass; // Retrieve selectedClass from form data
-        const selectedSection = req.body.selectedSection; // Retrieve selectedSection from form data
-        const matchingStudents = [];
-        fs.createReadStream('./student.csv')
-                .pipe(csv())
-                .on('data', (student) => {
+    const selectedClass = req.body.selectedClass;
+    const selectedSection = req.body.selectedSection;
+    const matchingStudents = [];
 
-                    const ufidValue = student.ufid;
-                    const class1Value = student.class1;
-                    const section1Value = student.section1;
-                    const class2Value = student.class2;
-                    const section2Value = student.section2;
-                    const class3Value = student.class3;
-                    const section3Value = student.section3;
-                    const class4Value = student.class4;
-                    const section4Value = student.section4;
+    fs.createReadStream('./student.csv')
+        .pipe(csv())
+        .on('data', (student) => {
+            const ufidValue = student.ufid;
+            const class1Value = student.class1;
+            const section1Value = student.section1;
+            const class2Value = student.class2;
+            const section2Value = student.section2;
+            const class3Value = student.class3;
+            const section3Value = student.section3;
+            const class4Value = student.class4;
+            const section4Value = student.section4;
+            const timeArrayValue = Object.values(student).slice(9);
 
-                    if ((class1Value === selectedClass && section1Value === selectedSection) ||
+            if ((class1Value === selectedClass && section1Value === selectedSection) ||
                 (class2Value === selectedClass && section2Value === selectedSection) ||
                 (class3Value === selectedClass && section3Value === selectedSection) ||
                 (class4Value === selectedClass && section4Value === selectedSection)) {
-                const timeArrayValue = Object.values(student).slice(9); 
-                // Add the student's information to the array
-                matchingStudents.push({ ufid: ufidValue, class1: class1Value, section1: section1Value, class2: class2Value, section2: section2Value, class3: class3Value, section3: section3Value, class4: class4Value, section4: section4Value, timeArray: timeArrayValue});
+                matchingStudents.push({ ufid: ufidValue, timeArray: timeArrayValue });
             }
-                })
-                .on('end', () => {
-                    res.render('results', { matchingStudents, username: req.session.username, selectedClass, selectedSection, groupSize});
-                });
+        })
+        .on('end', () => {
+            // Calculate compatibility scores and sort the students based on these scores
+            matchingStudents.forEach(student => {
+                student.compatibility = matchingStudents.map(otherStudent => ({
+                    ufid: otherStudent.ufid,
+                    score: hammingDistance(student.timeArray, otherStudent.timeArray)
+                })).filter(other => other.ufid !== student.ufid)
+                .sort((a, b) => a.score - b.score);
+            });
 
+            // Pair students based on compatibility, ensuring each student is paired only once
+            const pairs = [];
+            const pairedStudents = new Set();
+
+            matchingStudents.forEach(student => {
+                if (!pairedStudents.has(student.ufid)) {
+                    const mostCompatibleMatch = student.compatibility.find(other => !pairedStudents.has(other.ufid));
+                    if (mostCompatibleMatch) {
+                        pairs.push({ student1: student.ufid, student2: mostCompatibleMatch.ufid });
+                        pairedStudents.add(student.ufid);
+                        pairedStudents.add(mostCompatibleMatch.ufid);
+                    }
+                }
+            });
+
+            res.render('results', { pairs, username: req.session.username, selectedClass, selectedSection });
+        });
 });
 
 /**
