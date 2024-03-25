@@ -16,7 +16,9 @@ html(lang='en')
       .content-container
         .scrollable-box#resultsBox
           each pair, index in pairs
-            p= 'Group ' + (index + 1) + ': ' + pair.student1 + ', ' + pair.student2
+           div.group-name= 'Group ' + (index + 1)
+           div.id-item= pair.student1
+           div.id-item= pair.student2
       .result-button-container
           a.button-left(href='/options') Home
           a.button-right(href='#', id='exportButton') Export

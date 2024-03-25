@@ -211,12 +211,25 @@ select {
   background: linear-gradient(to bottom right, #ffffff, #ffffff); /* Gradient background */
   border-radius: 10px;
   padding: 20px; /* Increased padding for better spacing */
-  font-family: 'Roboto', sans-serif; /* Changed font */
-  color: #333; /* Text color */
+  font-family: 'Montserrat', sans-serif; /* Changed font */
+  color: #ffba61; /* Text color */
   text-align: center;
   line-height: 1.6; /* Slightly increased line height for better readability */
   margin-top: 30px; /* Adjusted margin top */
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.2); /* Added box shadow for depth */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.group-name {
+  grid-column: span 1; /* Spanning both columns */
+  font-weight: bold; /* Making group name bold */
+  font-size: 24px; /* Larger font size for group name */
+}
+
+.id-item {
+  grid-column: span 1; /* Spanning both columns */
+  text-align: center; /* Align IDs to the left within columns */
+  font-size: 18px; /* Font size for IDs */
 }
 
 .scrollable-box::-webkit-scrollbar {
