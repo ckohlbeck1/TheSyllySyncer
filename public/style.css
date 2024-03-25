@@ -205,19 +205,41 @@ select {
 }
 
 .scrollable-box {
-  width: 50%; /* Increased width for better readability */
-  font-size: 18px; /* Slightly reduced font size for better readability */
+  width: 50%; /* Adjusted width for better fit */
   max-height: 80%; /* Adjusted max height for better spacing */
   overflow-y: auto;
-  background-color: #f0f0f0;
+  background: linear-gradient(to bottom right, #ffffff, #ffffff); /* Gradient background */
   border-radius: 10px;
   padding: 20px; /* Increased padding for better spacing */
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif; /* Changed font */
+  color: #333; /* Text color */
   text-align: center;
   line-height: 1.6; /* Slightly increased line height for better readability */
-  margin-top: 80px;
+  margin-top: 30px; /* Adjusted margin top */
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.2); /* Added box shadow for depth */
 }
 
+.scrollable-box::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+.scrollable-box::-webkit-scrollbar-thumb {
+  background-color: #FF6347; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners of the scrollbar thumb */
+}
+
+.scrollable-box::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Background color of the scrollbar track */
+}
+
+.scrollable-box p {
+  margin-bottom: 10px; /* Adjusted margin for better spacing between paragraphs */
+}
+
+.scrollable-box a {
+  color: #4682B4; /* Link color */
+  text-decoration: underline; /* Underline for links */
+}
 
 
 .result-button-container {
