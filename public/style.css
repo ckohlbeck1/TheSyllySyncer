@@ -128,7 +128,8 @@ button[type="submit"]:hover {
 }
 
 .right-section a:hover {
-  text-decoration: underline;
+ /* text-decoration: underline;*/
+  color: orange
 }
 
 
